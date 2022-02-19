@@ -5,4 +5,4 @@ UI inspired from system calculator app of iPhone.
 
 Screenshot attached below for reference.
 
-
+![](screenshots/Screenshot.png)

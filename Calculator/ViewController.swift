@@ -95,7 +95,12 @@ class ViewController: UIViewController {
             return
         }
         
-        if prevNumber.count == 0
+        if !(calculationLabel.text?.last?.isNumber ?? false)
+        {
+            return
+        }
+        
+        if prevNumber.count == 0 || resultLabel.text?.count == 0
         {
             prevNumber = calculationLabel.text ?? ""
         }
@@ -163,11 +168,23 @@ class ViewController: UIViewController {
         calculationLabel.text = resultLabel.text
         resultLabel.text = ""
         calculation = -1
+        currentNumber = ""
+        prevNumber = calculationLabel.text ?? ""
     }
     
     @IBAction func plusMinusButtonAction(_ sender: UIButton)
     {
-        
+        if resultLabel.text?.count == 0
+        {
+            if calculationLabel.text?.count == 0
+            {
+                return
+            }
+            else
+            {
+                calculationLabel.text = "-\(calculationLabel.text ?? "")"
+            }
+        }
     }
     
     func calculateResult()

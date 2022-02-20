@@ -10,9 +10,11 @@ import Foundation
 
 class ViewController: UIViewController {
 
+    //MARK: - IBOutlets
     @IBOutlet weak var calculationLabel: UILabel!
     @IBOutlet weak var resultLabel: UILabel!
     
+    //MARK: - Variables
     /*
      -1: none
      0: addition
@@ -29,6 +31,7 @@ class ViewController: UIViewController {
     var prevNumber: String = ""
     var currentNumber: String = ""
     
+    //MARK: - Lifecycle method
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -36,6 +39,7 @@ class ViewController: UIViewController {
         resetCalculator()
     }
     
+    //MARK: - UI setup method
     func uiSetup()
     {
         calculationLabel.numberOfLines = 1
@@ -44,6 +48,12 @@ class ViewController: UIViewController {
         resultLabel.lineBreakMode = .byTruncatingHead
     }
     
+    //MARK: - IBActions
+    
+    /*
+     Description: IBAction for number buttons
+     Parameters: sender: UIButton
+     */
     @IBAction func numberButtonAction(_ sender: UIButton)
     {
         if resultLabel.text == cErrorMessage
@@ -87,11 +97,15 @@ class ViewController: UIViewController {
                 }
             }
             
-            _ = calculateResult(prevNumber, currentNumber)
+            calculateResult(prevNumber, currentNumber)
             calculationLabel.text?.append(enteredDigit)
         }
     }
     
+    /*
+     Description: IBAction for +, -, /, * operations
+     Parameters: sender: UIButton
+     */
     @IBAction func basicCalculationButtonAction(_ sender: UIButton)
     {
         if calculationLabel.text?.count == 0
@@ -146,6 +160,10 @@ class ViewController: UIViewController {
         }
     }
     
+    /*
+     Description: IBAction for Sin, square root, cube root, log operations
+     Parameters: sender: UIButton
+     */
     @IBAction func complexCalculationButtonAction(_ sender: UIButton)
     {
         switch sender.tag {
@@ -162,7 +180,7 @@ class ViewController: UIViewController {
             {
                 prevNumber = resultLabel.text?.count ?? 0 == 0 ? calculationLabel.text ?? "" : resultLabel.text ?? ""
                 calculationLabel.text = "Sin\(prevNumber)"
-                _ = calculateResult(prevNumber, currentNumber)
+                calculateResult(prevNumber, currentNumber)
             }
             
         case 202:
@@ -178,7 +196,7 @@ class ViewController: UIViewController {
             {
                 prevNumber = resultLabel.text?.count ?? 0 == 0 ? calculationLabel.text ?? "" : resultLabel.text ?? ""
                 calculationLabel.text = "√\(prevNumber)"
-                _ = calculateResult(prevNumber, currentNumber)
+                calculateResult(prevNumber, currentNumber)
             }
             
         case 203:
@@ -193,7 +211,7 @@ class ViewController: UIViewController {
             {
                 prevNumber = resultLabel.text?.count ?? 0 == 0 ? calculationLabel.text ?? "" : resultLabel.text ?? ""
                 calculationLabel.text = "3√\(prevNumber)"
-                _ = calculateResult(prevNumber, currentNumber)
+                calculateResult(prevNumber, currentNumber)
             }
             
         case 204:
@@ -208,18 +226,26 @@ class ViewController: UIViewController {
             {
                 prevNumber = resultLabel.text?.count ?? 0 == 0 ? calculationLabel.text ?? "" : resultLabel.text ?? ""
                 calculationLabel.text = "log\(prevNumber)"
-                _ = calculateResult(prevNumber, currentNumber)
+                calculateResult(prevNumber, currentNumber)
             }
         default:
             willPrint("will never get executed")
         }
     }
     
+    /*
+     Description: IBAction AC button
+     Parameters: sender: UIButton
+     */
     @IBAction func clearButtonAction(_ sender: UIButton)
     {
         resetCalculator()
     }
     
+    /*
+     Description: IBAction for result(=) button
+     Parameters: sender: UIButton
+     */
     @IBAction func resultButtonAction(_ sender: UIButton)
     {
         calculationLabel.text = resultLabel.text
@@ -229,6 +255,10 @@ class ViewController: UIViewController {
         prevNumber = calculationLabel.text ?? ""
     }
     
+    /*
+     Description: IBAction for +/- operation
+     Parameters: sender: UIButton
+     */
     @IBAction func plusMinusButtonAction(_ sender: UIButton)
     {
         if resultLabel.text?.count == 0
@@ -268,7 +298,13 @@ class ViewController: UIViewController {
         }
     }
     
-    func calculateResult(_ leftValue: String, _ rightValue: String) -> String?
+    //MARK: - Calculator Methods
+    
+    /*
+     Description: Performs the calculator operations and sets the result to the label
+     Parameters: leftvalue: String, rightValue: String
+     */
+    func calculateResult(_ leftValue: String, _ rightValue: String)
     {
         let leftVal: Float = Float(leftValue) ?? 0.0
         let rightVal: Float = Float(rightValue) ?? 0.0
@@ -305,10 +341,11 @@ class ViewController: UIViewController {
         formatter.maximumFractionDigits = 2
         
         resultLabel.text = "\(formatter.string(from: NSNumber(value: result)) ?? "")"
-        
-        return resultLabel.text
     }
     
+    /*
+     Description: Method to reset Calculator. Called on AC button action and on app launch.
+     */
     func resetCalculator()
     {
         resultLabel.text = ""

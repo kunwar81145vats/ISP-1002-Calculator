@@ -23,8 +23,7 @@ class ViewController: UIViewController {
      5: square root
      6: cube root
      7: log()
-     8: +/-
-     9: sin()
+     8: sin()
      */
     var calculation: Int = -1
     var prevNumber: String = ""
@@ -47,6 +46,11 @@ class ViewController: UIViewController {
     
     @IBAction func numberButtonAction(_ sender: UIButton)
     {
+        if resultLabel.text == cErrorMessage
+        {
+            resultLabel.text = ""
+        }
+        
         var enteredDigit: String = ""
         
         if sender.tag >= 0
@@ -83,10 +87,6 @@ class ViewController: UIViewController {
                 }
             }
             
-            if calculation == 9
-            {
-                
-            }
             _ = calculateResult(prevNumber, currentNumber)
             calculationLabel.text?.append(enteredDigit)
         }
@@ -117,32 +117,32 @@ class ViewController: UIViewController {
         
         switch sender.tag {
         case 101:
-            print("/ is pressed")
+            willPrint("/ is pressed")
             calculation = 3
             calculationLabel.text?.append(" / ")
         case 102:
-            print("X is pressed")
+            willPrint("X is pressed")
             calculation = 2
             calculationLabel.text?.append(" x ")
 
         case 103:
-            print("- is pressed")
+            willPrint("- is pressed")
             calculation = 1
             calculationLabel.text?.append(" - ")
 
         case 104:
-            print("+ is pressed")
+            willPrint("+ is pressed")
             calculation = 0
             calculationLabel.text?.append(" + ")
 
         case 105:
-            print("% is pressed")
+            willPrint("% is pressed")
             calculation = 4
             calculationLabel.text?.append(" % ")
 
             
         default:
-            print("will never get executed")
+            willPrint("will never get executed")
         }
     }
     
@@ -150,9 +150,10 @@ class ViewController: UIViewController {
     {
         switch sender.tag {
         case 201:
-            print("Sin is pressed")
-            if calculationLabel.text?.count == 0
+            willPrint("Sin is pressed")
+            if calculationLabel.text == "0"
             {
+                resultLabel.text = cErrorMessage
                 return
             }
             
@@ -165,9 +166,10 @@ class ViewController: UIViewController {
             }
             
         case 202:
-            print("square root is pressed")
-            if calculationLabel.text?.count == 0
+            willPrint("square root is pressed")
+            if calculationLabel.text == "0"
             {
+                resultLabel.text = cErrorMessage
                 return
             }
             
@@ -180,9 +182,10 @@ class ViewController: UIViewController {
             }
             
         case 203:
-            print("cube root is pressed")
-            if calculationLabel.text?.count == 0
+            willPrint("cube root is pressed")
+            if calculationLabel.text == "0"
             {
+                resultLabel.text = cErrorMessage
                 return
             }
             calculation = 6
@@ -194,9 +197,10 @@ class ViewController: UIViewController {
             }
             
         case 204:
-            print("log is pressed")
-            if calculationLabel.text?.count == 0
+            willPrint("log is pressed")
+            if calculationLabel.text == "0"
             {
+                resultLabel.text = cErrorMessage
                 return
             }
             calculation = 7
@@ -207,7 +211,7 @@ class ViewController: UIViewController {
                 _ = calculateResult(prevNumber, currentNumber)
             }
         default:
-            print("will never get executed")
+            willPrint("will never get executed")
         }
     }
     
@@ -235,8 +239,32 @@ class ViewController: UIViewController {
             }
             else
             {
-                calculationLabel.text = "-\(calculationLabel.text ?? "")"
+                if calculationLabel.text?.first == "-"
+                {
+                    calculationLabel.text?.removeFirst()
+                }
+                else
+                {
+                    calculationLabel.text = "-\(calculationLabel.text ?? "")"
+                }
             }
+        }
+        else
+        {
+            if resultLabel.text?.first == "-"
+            {
+                resultLabel.text?.removeFirst()
+                calculationLabel.text = "\(resultLabel.text ?? "")"
+            }
+            else
+            {
+                calculationLabel.text = "-\(resultLabel.text ?? "")"
+            }
+            
+            resultLabel.text = ""
+            calculation = -1
+            currentNumber = ""
+            prevNumber = calculationLabel.text ?? ""
         }
     }
     
@@ -262,16 +290,14 @@ class ViewController: UIViewController {
         case 6:
             result = pow(leftVal, 1/3)
         case 7:
-            print("log calculate")
+            willPrint("log calculate")
             result = log(leftVal)
         case 8:
-            print("+/-")
-        case 9:
-            print("Sin")
+            willPrint("Sin")
             result = sin(leftVal)
             
         default:
-            print("do nothing")
+            willPrint("do nothing")
         }
                 
         let formatter = NumberFormatter()

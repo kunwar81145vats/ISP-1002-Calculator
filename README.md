@@ -8,4 +8,4 @@ Some important notes:
 
 Screenshot attached below for reference.
 
-![](screenshots/Screenshot.png)
+![]

@@ -55,7 +55,7 @@
                                                 <color key="backgroundColor" red="0.53725492949999998" green="0.55686277149999996" blue="0.62745100259999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                 <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <state key="normal" title="Button"/>
-                                                <buttonConfiguration key="configuration" style="plain" title="^">
+                                                <buttonConfiguration key="configuration" style="plain" title="Sin">
                                                     <fontDescription key="titleFontDescription" type="system" weight="heavy" pointSize="18"/>
                                                 </buttonConfiguration>
                                                 <connections>

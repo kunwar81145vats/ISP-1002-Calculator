@@ -22,9 +22,9 @@ class ViewController: UIViewController {
      4: percentage
      5: square root
      6: cube root
-     7: log
+     7: log()
      8: +/-
-     9: power
+     9: sin()
      */
     var calculation: Int = -1
     var prevNumber: String = ""
@@ -59,7 +59,7 @@ class ViewController: UIViewController {
             {
                 enteredDigit = "."
             }
-            else
+            else if ((calculationLabel.text?.last?.isSymbol) == nil)
             {
                 enteredDigit = "0."
             }
@@ -83,7 +83,11 @@ class ViewController: UIViewController {
                 }
             }
             
-            calculateResult()
+            if calculation == 9
+            {
+                
+            }
+            _ = calculateResult(prevNumber, currentNumber)
             calculationLabel.text?.append(enteredDigit)
         }
     }
@@ -146,13 +150,62 @@ class ViewController: UIViewController {
     {
         switch sender.tag {
         case 201:
-            print("^ is pressed")
+            print("Sin is pressed")
+            if calculationLabel.text?.count == 0
+            {
+                return
+            }
+            
+            calculation = 9
+            if ((calculationLabel.text?.last?.isWhitespace) != nil)
+            {
+                prevNumber = resultLabel.text?.count ?? 0 == 0 ? calculationLabel.text ?? "" : resultLabel.text ?? ""
+                calculationLabel.text = "Sin\(prevNumber)"
+                _ = calculateResult(prevNumber, currentNumber)
+            }
+            
         case 202:
             print("square root is pressed")
+            if calculationLabel.text?.count == 0
+            {
+                return
+            }
+            
+            calculation = 5
+            if ((calculationLabel.text?.last?.isWhitespace) != nil)
+            {
+                prevNumber = resultLabel.text?.count ?? 0 == 0 ? calculationLabel.text ?? "" : resultLabel.text ?? ""
+                calculationLabel.text = "√\(prevNumber)"
+                _ = calculateResult(prevNumber, currentNumber)
+            }
+            
         case 203:
             print("cube root is pressed")
+            if calculationLabel.text?.count == 0
+            {
+                return
+            }
+            calculation = 6
+            if ((calculationLabel.text?.last?.isWhitespace) != nil)
+            {
+                prevNumber = resultLabel.text?.count ?? 0 == 0 ? calculationLabel.text ?? "" : resultLabel.text ?? ""
+                calculationLabel.text = "3√\(prevNumber)"
+                _ = calculateResult(prevNumber, currentNumber)
+            }
+            
         case 204:
             print("log is pressed")
+            if calculationLabel.text?.count == 0
+            {
+                return
+            }
+            calculation = 7
+            if ((calculationLabel.text?.last?.isWhitespace) != nil)
+            {
+                prevNumber = resultLabel.text?.count ?? 0 == 0 ? calculationLabel.text ?? "" : resultLabel.text ?? ""
+                calculationLabel.text = "log\(prevNumber)"
+                _ = calculateResult(prevNumber, currentNumber)
+            }
         default:
             print("will never get executed")
         }
@@ -187,10 +240,10 @@ class ViewController: UIViewController {
         }
     }
     
-    func calculateResult()
+    func calculateResult(_ leftValue: String, _ rightValue: String) -> String?
     {
-        let leftVal: Float = Float(prevNumber) ?? 0.0
-        let rightVal: Float = Float(currentNumber) ?? 0.0
+        let leftVal: Float = Float(leftValue) ?? 0.0
+        let rightVal: Float = Float(rightValue) ?? 0.0
         var result: Float = 0.0
         
         switch calculation {
@@ -205,17 +258,17 @@ class ViewController: UIViewController {
         case 4:
             result = leftVal.truncatingRemainder(dividingBy: rightVal)
         case 5:
-            calculationLabel.text = "2√(\(calculationLabel.text ?? ""))"
             result = leftVal.squareRoot()
         case 6:
-            calculationLabel.text = "3√(\(calculationLabel.text ?? ""))"
             result = pow(leftVal, 1/3)
         case 7:
             print("log calculate")
+            result = log(leftVal)
         case 8:
             print("+/-")
         case 9:
-            print("power")
+            print("Sin")
+            result = sin(leftVal)
             
         default:
             print("do nothing")
@@ -226,6 +279,8 @@ class ViewController: UIViewController {
         formatter.maximumFractionDigits = 2
         
         resultLabel.text = "\(formatter.string(from: NSNumber(value: result)) ?? "")"
+        
+        return resultLabel.text
     }
     
     func resetCalculator()
